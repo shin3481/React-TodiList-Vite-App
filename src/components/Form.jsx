@@ -1,16 +1,15 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { connect } from '../../node_modules/.vite/deps_temp_e7f6cbaf/react-redux';
 
-import { addTodo } from '@actions';
+import { addTodo } from '@/actions';
 import '@components/Form.css';
 
 class Form extends Component {
     state = {
         todo: '',
-
     };
+
     //이벤트핸들러 함수 선언
     handleChange = (e) => {
         this.setState({
@@ -38,6 +37,7 @@ class Form extends Component {
             this.handleCreate();
         }
     }; //handleEnter
+
     render() {
         const { todo } = this.state;
         const { handleChange, handleEnter, handleCreate } = this;
@@ -55,6 +55,5 @@ class Form extends Component {
 
 Form.propTypes = {
     addTodo: PropTypes.func,
-
 };
-export default connect(null, {addTodo})(Form);
+export default connect(null, { addTodo })(Form);
