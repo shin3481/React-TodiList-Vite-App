@@ -1,6 +1,10 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import './Form.css';
+import { connect } from 'react-redux';
+import { connect } from '../../node_modules/.vite/deps_temp_e7f6cbaf/react-redux';
+
+import { addTodo } from '@actions';
+import '@components/Form.css';
 
 class Form extends Component {
     state = {
@@ -15,15 +19,15 @@ class Form extends Component {
     }; //handleChange
 
     handleCreate = () => {
-        const { todo, todos } = this.state;
+        const { todo } = this.state;
         const newTodo = {
-            id: this.id++,
             text: todo,
             checked: false
         };
+        //Action 함수호출하기
+        this.props.addTodo(newTodo);
 
         this.setState({
-            todos: [...todos, newTodo],
             todo: '', // input 초기화
         });
     }; //handleCreate
@@ -35,12 +39,13 @@ class Form extends Component {
         }
     }; //handleEnter
     render() {
-        const { mytodo, myEnter, myChange, myCreate } = this.props;
+        const { todo } = this.state;
+        const { handleChange, handleEnter, handleCreate } = this;
         return (
             <div className="form">
-                <input value={mytodo} onChange={myChange}
-                    onKeyDown={myEnter} />
-                <div className="create-button" onClick={myCreate}>
+                <input value={todo} onChange={handleChange}
+                    onKeyDown={handleEnter} />
+                <div className="create-button" onClick={handleCreate}>
                     추가
                 </div>
             </div>
@@ -49,9 +54,7 @@ class Form extends Component {
 }
 
 Form.propTypes = {
-    mytodo: PropTypes.string,
-    myEnter: PropTypes.func,
-    myChange: PropTypes.func,
-    myCreate: PropTypes.func
+    addTodo: PropTypes.func,
+
 };
-export default Form;
+export default connect(null, {addTodo})(Form);
