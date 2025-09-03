@@ -1,8 +1,14 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
+
+import { fetchAllTodos } from '../actions'
 import TodoItem from './TodoItem';
 
 class TodoItemList extends Component {
+    componentDidMount(){
+        this.props.getTodos();
+    }
     //true 리턴 (myTodos 변수에 변경이 있는 경우 )이면 render()함수가 호출됨
     //flase 리턴(myTodos 변수에 변경이 없는 경우 )이면 render()함수가 호출되지 않음(렌더링 생략)
     shouldComponentUpdate(nextProps, nextState) {
@@ -31,6 +37,12 @@ class TodoItemList extends Component {
 TodoItemList.propTypes = {
     myTodos: PropTypes.array,
     myToggle: PropTypes.func,
-    myRemove: PropTypes.func
+    myRemove: PropTypes.func,
+    getTodos: PropTypes.func
 };
-export default TodoItemList;
+export default connect(
+    //store에  저장된 todos를 가져와서 myTodos에 매핑하기
+    (state)=> ({myTodos: state.todos}),
+    //action함수를 dispatch 하는 함수를 fetchAll 프로퍼티에 매핑하기
+    {getTodos: fetchAllTodos}
+)(TodoItemList);
